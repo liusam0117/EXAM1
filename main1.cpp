@@ -1,9 +1,9 @@
 #include "mbed.h"
 #include "uLCD_4DGL.h"
 
-DigitalIn mypin1(D8);
-DigitalIn mypin2(D9);
-DigitalIn mypin3(D10);
+DigitalIn btn1(D8);
+DigitalIn btn2(D9);
+DigitalIn btn3(D10);
 AnalogOut aout(PA_4); // D7
 AnalogIn Ain(A0);
 
@@ -29,14 +29,14 @@ int main()
     uLCD.text_height(2);
     uLCD.color(BLUE);
     uLCD.printf("SLEWRATE:");
-    while(!mypin3){
+    while(!btn3){
         uLCD.locate(3,2);
         //uLCD.printf("%2d",counter);
-        if(mypin2 && counter < 3){           
+        if(btn2 && counter < 3){           
             counter++;
             slewrates = pow(2, counter); 
             uLCD.printf("1/%d",slewrates);
-        }else if(mypin1 && counter > 0){            
+        }else if(btn1 && counter > 0){            
             counter--;
             slewrates = pow(2, counter); 
             uLCD.printf("1/%d",slewrates);
@@ -44,7 +44,7 @@ int main()
             slewrates = pow(2, counter);
             uLCD.printf("1/%d",slewrates);
         }
-        ThisThread::sleep_for(300ms);
+        ThisThread::sleep_for(100ms);
     }
     uLCD.locate(3,2);
     uLCD.textbackground_color(BLACK);
