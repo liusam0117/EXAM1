@@ -1,9 +1,9 @@
 #include "mbed.h"
 #include "uLCD_4DGL.h"
 
-InterruptIn mypin1(D8);
-InterruptIn mypin2(D9);
-InterruptIn mypin3(D10);
+DigitalIn mypin1(D8);
+DigitalIn mypin2(D9);
+DigitalIn mypin3(D10);
 AnalogOut aout(PA_4); // D7
 AnalogIn Ain(A0);
 
@@ -11,15 +11,15 @@ uLCD_4DGL uLCD(D1, D0, D2);
 
 
 
-int freq = 0;
+float freq;
 Thread t;
 void gen_waveform();
 
 int main()
 {
-    int counter = 0;
-    int S;
-    int freq_rate = 20;
+    float counter = 0.125;
+    //int S;
+    float freq_confirm;
     uLCD.text_width(2); //4X size text
     uLCD.background_color(0xFFFFFF);
     uLCD.textbackground_color(0xFFFFFF);
@@ -29,24 +29,45 @@ int main()
     while(!mypin3){
         uLCD.locate(1,2);
         //uLCD.printf("%2d",counter);
-        if(mypin1 && counter < 4){           
-            counter++;
-            freq = (counter+1)*freq_rate; 
-            uLCD.printf("%3dHz",freq);
-        }else if(mypin2 && counter > 0){            
-            counter--;
-            freq = (counter+1)*freq_rate; 
-            uLCD.printf("%3dHz",freq);
-        }else {
-            freq = (counter+1)*freq_rate;
-            uLCD.printf("%3dHz",freq);
+        if(mypin1 && counter == 0.125){ 
+            freq = counter;
+            counter = 0.25;          
+            uLCD.printf("%.3f",freq);
+        }else if(mypin1 && counter == 0.25){
+            freq = counter;
+            counter = 0.5;               
+            uLCD.printf("%.3f",freq);
+        }else if(mypin1 && counter == 0.5) {
+            freq = counter;
+            counter = 1; 
+            uLCD.printf("%.3f",freq);
+        }else if(mypin1 && counter == 1.0) {
+            freq = counter;
+            counter = 1; 
+            uLCD.printf("%.3f",freq);
+        }else if(mypin2 && counter == 0.125){
+            freq = counter;
+            counter = 0.125;           
+            uLCD.printf("%.3f",freq);
+        }else if(mypin2 && counter == 0.25){
+            freq = counter;
+            counter = 0.125;     
+            uLCD.printf("%.3f",freq);
+        }else if(mypin2 && counter == 0.5) {
+            freq = counter;
+            counter = 0.25; 
+            uLCD.printf("%.3f",freq);
+        }else(mypin2 && counter == 1.0);{
+            freq = counter;
+            counter = 0.5; 
+            uLCD.printf("%.3f",freq);
         }
         ThisThread::sleep_for(300ms);
     }
     uLCD.locate(1,2);
     uLCD.textbackground_color(BLACK);
-    freq = (counter+1)*freq_rate;
-    uLCD.printf("%3dHz",freq);
+    freq_confirm = freq;
+    uLCD.printf("%.3f",freq_confirm);
     
     ThisThread::sleep_for(500ms);
     float data[600] = {0};
