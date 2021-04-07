@@ -48,6 +48,7 @@ int main()
     }
     uLCD.locate(3,2);
     uLCD.textbackground_color(BLACK);
+    uLCD.color(RED);
     slewrates = pow(2, counter);
     uLCD.printf("1/%d",slewrates);
     
